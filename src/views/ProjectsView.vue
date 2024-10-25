@@ -6,5 +6,3 @@
     <RouterLink to="/">Go to Home</RouterLink>
   </div>
 </template>
-
-<style scoped></style>

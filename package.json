@@ -11,6 +11,9 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
+    "supabase:init": "supabase init",
+    "supabase:login": "supabase login",
+    "supabase:link": "supabase link --project-ref=$VITE_SUPABASE_PROJECT_REF",
     "prepare": "husky",
     "commitlint": "commitlint --edit"
   },
@@ -34,6 +37,7 @@
     "husky": "^9.1.6",
     "npm-run-all2": "^6.2.3",
     "prettier": "^3.3.3",
+    "supabase": "^1.207.9",
     "typescript": "~5.5.4",
     "unplugin-vue-router": "^0.10.8",
     "vite": "^5.4.8",

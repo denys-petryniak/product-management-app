@@ -16,6 +16,7 @@
     "supabase:link": "supabase link --project-ref=$VITE_SUPABASE_PROJECT_REF",
     "db:migrate:new": "supabase migration new projects_schema",
     "db:reset": "supabase db reset --linked",
+    "db:seed": "node --env-file=.env database/seed.js",
     "prepare": "husky",
     "commitlint": "commitlint --edit"
   },

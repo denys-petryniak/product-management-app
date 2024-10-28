@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { supabase } from '@/lib/supabaseClient'
 
-const getProjects = async () => {
+// TODO: use top-level await instead of IIFE (?)
+;(async () => {
   const { data, error } = await supabase.from('projects').select()
 
   if (error) {
@@ -9,9 +10,7 @@ const getProjects = async () => {
   }
 
   console.log(data)
-}
-
-await getProjects()
+})()
 </script>
 
 <template>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { supabase } from '@/lib/supabaseClient'
+import type { Tables } from '../../../database/types'
 
-const projects = ref<any[] | null>(null)
+const projects = ref<Tables<'projects'>[] | null>(null)
 
 // TODO: use top-level await instead of IIFE (?)
 ;(async () => {
@@ -22,6 +23,10 @@ const projects = ref<any[] | null>(null)
   <div>
     <h1>Projects Page</h1>
     <RouterLink to="/">Go to Home</RouterLink>
-    <pre>{{ projects }}</pre>
+    <ul v-if="projects?.length">
+      <li v-for="project in projects" :key="project.id">
+        {{ project.name }}
+      </li>
+    </ul>
   </div>
 </template>

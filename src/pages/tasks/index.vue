@@ -3,27 +3,26 @@ import { ref } from 'vue'
 import { supabase } from '@/lib/supabaseClient'
 import type { Tables } from '../../../database/types'
 
-const projects = ref<Tables<'projects'>[] | null>(null)
+const tasks = ref<Tables<'tasks'>[] | null>(null)
 
-// TODO: use top-level await instead of IIFE (?)
 ;(async () => {
-  const { data, error } = await supabase.from('projects').select()
+  const { data, error } = await supabase.from('tasks').select()
 
   if (error) {
     console.error(error)
   }
 
-  projects.value = data
+  tasks.value = data
 })()
 </script>
 
 <template>
   <div>
-    <h1>Projects Page</h1>
+    <h1>Tasks Page</h1>
     <RouterLink to="/">Go to Home</RouterLink>
-    <ul v-if="projects?.length">
-      <li v-for="project in projects" :key="project.id">
-        {{ project.name }}
+    <ul v-if="tasks?.length">
+      <li v-for="task in tasks" :key="task.id">
+        {{ task.name }}
       </li>
     </ul>
   </div>

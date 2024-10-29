@@ -15,7 +15,7 @@
     "supabase:login": "supabase login",
     "supabase:link": "supabase link --project-ref qnwapezkyxqzgbvhlidy",
     "supabase:types": "npx supabase gen types --lang=typescript --project-id qnwapezkyxqzgbvhlidy --schema public > database/types.ts",
-    "db:migrate:new": "supabase migration new projects_schema",
+    "db:migrate:new": "supabase migration new",
     "db:reset": "supabase db reset --linked",
     "db:seed": "node --env-file=.env database/seed.js",
     "prepare": "husky",

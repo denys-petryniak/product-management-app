@@ -5,6 +5,7 @@ import App from './App.vue'
 import router from './router'
 
 import './assets/index.css'
+import 'iconify-icon'
 
 const app = createApp(App)
 

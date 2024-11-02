@@ -5,7 +5,7 @@
     <RouterView v-slot="{ Component, route }">
       <template v-if="Component">
         <Suspense :timeout="0">
-          <Component :is="Component" :key="route.name"></Component>
+          <component :is="Component" :key="route.name"></component>
           <template #fallback>
             <span>Loading...</span>
           </template>

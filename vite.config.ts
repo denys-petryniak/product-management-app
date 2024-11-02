@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import VueRouter from 'unplugin-vue-router/vite'
 import AutoImport from 'unplugin-auto-import/vite'
+import { VueRouterAutoImports } from 'unplugin-vue-router'
 
 import tailwind from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
@@ -32,7 +33,8 @@ export default defineConfig({
       imports: [
         // presets
         'vue',
-        'vue-router',
+        // https://uvr.esm.is/introduction#auto-imports
+        VueRouterAutoImports,
       ],
       // Filepath to generate corresponding .d.ts file.
       // Defaults to './auto-imports.d.ts' when `typescript` is installed locally.

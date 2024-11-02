@@ -5,9 +5,11 @@ interface LinkProp {
   icon: string
 }
 
-defineProps<{
+interface Props {
   links: LinkProp[]
-}>()
+}
+
+defineProps<Props>()
 </script>
 
 <template>

@@ -72,6 +72,7 @@ const table = useVueTable({
 </template>
 
 <style scoped>
+/* TODO: Consider moving this to the TableCell component */
 td {
   @apply p-0;
 }

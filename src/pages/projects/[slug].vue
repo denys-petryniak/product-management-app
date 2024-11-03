@@ -26,34 +26,29 @@ await getProject()
 </script>
 
 <template>
-  <Table>
+  <Table v-if="project">
     <TableRow>
-      <TableHead> Name </TableHead>
-      <TableCell> Lorem ipsum dolor sit amet. </TableCell>
+      <TableHead>Name</TableHead>
+      <TableCell>{{ project.name }}</TableCell>
     </TableRow>
     <TableRow>
-      <TableHead> Description </TableHead>
+      <TableHead>Description</TableHead>
       <TableCell>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad iure qui
-        tempora ex nihil, ab reprehenderit dolorem sunt veritatis perferendis?
-        Repudiandae quis velit quasi ab natus quia ratione voluptas deserunt
-        labore sed distinctio nam fuga fugit vero voluptates placeat aperiam,
-        saepe excepturi eos harum consectetur doloremque perspiciatis nesciunt!
-        Incidunt, modi.
+        {{ project.description }}
       </TableCell>
     </TableRow>
     <TableRow>
-      <TableHead> Status </TableHead>
-      <TableCell>In progress</TableCell>
+      <TableHead>Status</TableHead>
+      <TableCell>{{ project.status }}</TableCell>
     </TableRow>
     <TableRow>
-      <TableHead> Collaborators </TableHead>
+      <TableHead>Collaborators</TableHead>
       <TableCell>
         <div class="flex">
           <Avatar
             class="-mr-4 border border-primary transition-transform hover:scale-110"
-            v-for="n in 5"
-            :key="n"
+            v-for="colaborator in project.collaborators"
+            :key="colaborator"
           >
             <RouterLink
               class="flex h-full w-full items-center justify-center"
@@ -67,20 +62,23 @@ await getProject()
       </TableCell>
     </TableRow>
   </Table>
-  <section class="mt-10 flex grow flex-col justify-between gap-5 md:flex-row">
+  <section
+    v-if="project"
+    class="mt-10 flex grow flex-col justify-between gap-5 md:flex-row"
+  >
     <div class="flex-1">
       <h2>Tasks</h2>
       <div class="table-container">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead> Name </TableHead>
-              <TableHead> Status </TableHead>
-              <TableHead> Due Date </TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Due Date</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow v-for="n in 5" :key="n">
+            <TableRow v-for="task in project.tasks" :key="task.id">
               <TableCell> Lorem ipsum dolor sit amet. </TableCell>
               <TableCell> In progress </TableCell>
               <TableCell> 22/08/2024 </TableCell>
@@ -114,7 +112,7 @@ await getProject()
   </section>
 </template>
 
-<style>
+<style scoped>
 th {
   @apply w-[100px];
 }

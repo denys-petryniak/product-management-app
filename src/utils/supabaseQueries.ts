@@ -27,9 +27,9 @@ export const projectQuery = (slug: string) =>
         id,
         name,
         status,
-        due_date,
+        due_date
       )
-    `,
+      `,
     )
     .eq('slug', slug)
     .single()

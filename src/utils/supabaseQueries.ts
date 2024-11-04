@@ -1,7 +1,6 @@
 import { supabase } from '@/lib/supabaseClient'
 import type { QueryData } from '@supabase/supabase-js'
 
-// FIXME: inferred types are not working
 export const tasksWithProjectsQuery = supabase.from('tasks').select(`
   *,
   projects (

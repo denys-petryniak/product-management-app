@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+useErrorStore().setError()
+</script>
 
 <template>
-  <AppErrorPage />
+  <div></div>
 </template>

@@ -6,17 +6,20 @@ export const useErrorStore = defineStore('error-store', () => {
 
   const setError = ({
     error,
-    customCode,
+    customCode = 500,
   }: {
-    error: string | PostgrestError
-    customCode: number
+    error: string | Error | PostgrestError
+    customCode?: number
   }) => {
-    if (typeof error === 'string') {
-      activeError.value = new Error(error)
+    // Handle generic error
+    if (typeof error === 'string' || error instanceof Error) {
+      activeError.value = typeof error === 'string' ? new Error(error) : error
       activeError.value.customCode = customCode
+
       return
     }
 
+    // Handle Supabase error
     activeError.value = error
     activeError.value.statusCode = customCode
   }

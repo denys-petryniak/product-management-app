@@ -1,17 +1,24 @@
-import type { CustomError } from '@/types/Error'
+import type { PostgrestError } from '@supabase/supabase-js'
+import type { CustomError, ExtendedPostgrestError } from '@/types/Error'
 
 export const useErrorStore = defineStore('error-store', () => {
-  const activeError = ref<null | CustomError>(null)
+  const activeError = ref<CustomError | ExtendedPostgrestError | null>(null)
 
   const setError = ({
     error,
     customCode,
   }: {
-    error: string
+    error: string | PostgrestError
     customCode: number
   }) => {
-    activeError.value = new Error(error)
-    activeError.value.customCode = customCode
+    if (typeof error === 'string') {
+      activeError.value = new Error(error)
+      activeError.value.customCode = customCode
+      return
+    }
+
+    activeError.value = error
+    activeError.value.statusCode = customCode
   }
 
   // TODO: add clearError() action

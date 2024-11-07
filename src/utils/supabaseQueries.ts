@@ -2,6 +2,7 @@ import { supabase } from '@/lib/supabaseClient'
 import type { QueryData } from '@supabase/supabase-js'
 
 // Fetch tasks with associated project details
+// FIXME: https://github.com/pnpm/pnpm/issues/6089
 export const tasksWithProjectsQuery = supabase.from('tasks').select(`
   *,
   projects (

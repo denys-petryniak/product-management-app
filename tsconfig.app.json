@@ -11,7 +11,7 @@
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
-    "composite": false, // Disabled due to https://github.com/pnpm/pnpm/issues/6089 (affects supabase queries)
+    "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "moduleResolution": "Bundler",
     "baseUrl": ".",

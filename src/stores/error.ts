@@ -27,12 +27,16 @@ export const useErrorStore = defineStore('error-store', () => {
     activeError.value.statusCode = customCode
   }
 
-  // TODO: add clearError() action
+  const clearError = () => {
+    activeError.value = null
+    isCustomError.value = false
+  }
 
   return {
     activeError,
     isCustomError,
     setError,
+    clearError,
   }
 })
 

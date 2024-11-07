@@ -3,6 +3,7 @@ import type { CustomError, ExtendedPostgrestError } from '@/types/Error'
 
 export const useErrorStore = defineStore('error-store', () => {
   const activeError = ref<CustomError | ExtendedPostgrestError | null>(null)
+  const isCustomError = ref(false)
 
   const setError = ({
     error,
@@ -11,6 +12,8 @@ export const useErrorStore = defineStore('error-store', () => {
     error: string | Error | PostgrestError
     customCode?: number
   }) => {
+    if (typeof error === 'string') isCustomError.value = true
+
     // Handle generic error
     if (typeof error === 'string' || error instanceof Error) {
       activeError.value = typeof error === 'string' ? new Error(error) : error
@@ -28,6 +31,7 @@ export const useErrorStore = defineStore('error-store', () => {
 
   return {
     activeError,
+    isCustomError,
     setError,
   }
 })

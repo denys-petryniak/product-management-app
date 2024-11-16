@@ -18,38 +18,46 @@ export const projectsQuery = supabase.from('projects').select()
 export type Projects = QueryData<typeof projectsQuery>
 
 // Fetch a single project by slug with associated tasks
-export const projectQuery = (slug: string) =>
-  supabase
+export const projectQuery = (slug: string) => {
+  return supabase
     .from('projects')
     .select(
       `
-      *,
-      tasks (
-        id,
-        name,
-        status,
-        due_date
-      )
-      `,
+    *,
+    tasks (
+      id,
+      name,
+      status,
+      due_date
+    )
+    `,
     )
     .eq('slug', slug)
     .single()
+}
 export type Project = QueryData<ReturnType<typeof projectQuery>>
 
 // Fetch a single task by ID with associated project details
-export const taskQuery = (id: string) =>
-  supabase
+export const taskQuery = (id: string) => {
+  return supabase
     .from('tasks')
     .select(
       `
-      *,
-      projects (
-        id,
-        name,
-        slug
-      )
-      `,
+    *,
+    projects (
+      id,
+      name,
+      slug
+    )
+    `,
     )
     .eq('id', id)
     .single()
+}
 export type Task = QueryData<ReturnType<typeof taskQuery>>
+
+// Fetch a single profile by ID
+export const profileQuery = (id: string) => {
+  return supabase.from('profiles').select().eq('id', id).single()
+}
+export type Profile = QueryData<ReturnType<typeof profileQuery>>

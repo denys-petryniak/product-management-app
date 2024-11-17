@@ -34,9 +34,12 @@ const accountLinks = [
   },
 ]
 
-const executeAction = (action: string) => {
-  if (action === 'Sign Out') {
-    console.log('Sign Out clicked')
+const executeAction = async (linkTitle: string) => {
+  if (linkTitle === 'Sign Out') {
+    // Dynamically import to ensure Pinia stores are fully initialized before use, as accessing them in external files (utils) can cause initialization issues.
+    const { logout } = await import('@/utils/supabaseAuth')
+
+    await logout()
   }
 }
 </script>

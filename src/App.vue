@@ -1,4 +1,10 @@
 <script setup lang="ts">
+const { trackAuthChanges } = useAuthStore()
+
+onMounted(() => {
+  trackAuthChanges()
+})
+
 const errorStore = useErrorStore()
 
 onErrorCaptured(error => {

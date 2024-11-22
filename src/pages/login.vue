@@ -6,7 +6,8 @@ const formData = ref({
   password: '',
 })
 
-const { serverError, handleServerError } = useFormErrors()
+const { serverError, realtimeErrors, handleServerError, handleLoginForm } =
+  useFormErrors()
 
 const router = useRouter()
 
@@ -46,7 +47,20 @@ const signIn = async () => {
               required
               :class="{ 'border-red-500': serverError }"
               v-model="formData.email"
+              @input="handleLoginForm(formData)"
             />
+            <ul
+              v-if="realtimeErrors?.email.length"
+              class="text-left text-sm text-red-500"
+            >
+              <li
+                v-for="error in realtimeErrors?.email"
+                :key="error"
+                class="list-disc"
+              >
+                {{ error }}
+              </li>
+            </ul>
           </div>
           <div class="grid gap-2">
             <div class="flex items-center">
@@ -63,6 +77,18 @@ const signIn = async () => {
               :class="{ 'border-red-500': serverError }"
               v-model="formData.password"
             />
+            <ul
+              v-if="realtimeErrors?.password.length"
+              class="text-left text-sm text-red-500"
+            >
+              <li
+                v-for="error in realtimeErrors?.password"
+                :key="error"
+                class="list-disc"
+              >
+                {{ error }}
+              </li>
+            </ul>
           </div>
           <ul v-if="serverError" class="text-left text-sm text-red-500">
             <li class="list-disc">{{ serverError }}</li>

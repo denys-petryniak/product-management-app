@@ -50,7 +50,7 @@ export default defineConfig({
       viteOptimizeDeps: true,
       // Auto import for module exports under directories
       // by default it only scan one level of modules under the directory
-      dirs: ['src/stores'],
+      dirs: ['src/stores/**', 'src/composables/**'],
     }),
     Components(),
   ],

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { watchDebounced } from '@vueuse/core'
 import { login } from '@/utils/supabaseAuth'
 
 const formData = ref({
@@ -20,6 +21,17 @@ const signIn = async () => {
 
   handleServerError(error)
 }
+
+watchDebounced(
+  formData,
+  () => {
+    handleLoginForm(formData.value)
+  },
+  {
+    debounce: 1000,
+    deep: true,
+  },
+)
 </script>
 
 <template>
@@ -47,20 +59,11 @@ const signIn = async () => {
               required
               :class="{ 'border-red-500': serverError }"
               v-model="formData.email"
-              @input="handleLoginForm(formData)"
             />
-            <ul
+            <ErrorList
               v-if="realtimeErrors?.email.length"
-              class="text-left text-sm text-red-500"
-            >
-              <li
-                v-for="error in realtimeErrors?.email"
-                :key="error"
-                class="list-disc"
-              >
-                {{ error }}
-              </li>
-            </ul>
+              :errors="realtimeErrors.email"
+            />
           </div>
           <div class="grid gap-2">
             <div class="flex items-center">
@@ -77,22 +80,12 @@ const signIn = async () => {
               :class="{ 'border-red-500': serverError }"
               v-model="formData.password"
             />
-            <ul
+            <ErrorList
               v-if="realtimeErrors?.password.length"
-              class="text-left text-sm text-red-500"
-            >
-              <li
-                v-for="error in realtimeErrors?.password"
-                :key="error"
-                class="list-disc"
-              >
-                {{ error }}
-              </li>
-            </ul>
+              :errors="realtimeErrors.password"
+            />
           </div>
-          <ul v-if="serverError" class="text-left text-sm text-red-500">
-            <li class="list-disc">{{ serverError }}</li>
-          </ul>
+          <ErrorList v-if="serverError" :errors="serverError" />
           <Button type="submit" class="w-full">Login</Button>
         </form>
         <div class="mt-4 text-center text-sm">

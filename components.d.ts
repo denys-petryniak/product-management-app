@@ -36,6 +36,7 @@ declare module 'vue' {
     DropdownMenuSubContent: typeof import('./src/components/ui/dropdown-menu/DropdownMenuSubContent.vue')['default']
     DropdownMenuSubTrigger: typeof import('./src/components/ui/dropdown-menu/DropdownMenuSubTrigger.vue')['default']
     DropdownMenuTrigger: typeof import('./src/components/ui/dropdown-menu/DropdownMenuTrigger.vue')['default']
+    ErrorList: typeof import('./src/components/ErrorList.vue')['default']
     Input: typeof import('./src/components/ui/input/Input.vue')['default']
     Label: typeof import('./src/components/ui/label/Label.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

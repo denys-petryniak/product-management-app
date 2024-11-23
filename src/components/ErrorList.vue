@@ -8,12 +8,14 @@
 
 <script setup lang="ts">
 interface Props {
-  errors: string | string[]
+  errors?: string | string[]
 }
 
 const { errors } = defineProps<Props>()
 
-const errorMessages = computed(() =>
-  Array.isArray(errors) ? errors : [errors],
-)
+const errorMessages = computed(() => {
+  if (!errors) return []
+
+  return Array.isArray(errors) ? errors : [errors]
+})
 </script>

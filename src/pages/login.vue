@@ -60,10 +60,7 @@ watchDebounced(
               :class="{ 'border-red-500': serverError }"
               v-model="formData.email"
             />
-            <ErrorList
-              v-if="realtimeErrors?.email.length"
-              :errors="realtimeErrors.email"
-            />
+            <ErrorList :errors="realtimeErrors?.email" />
           </div>
           <div class="grid gap-2">
             <div class="flex items-center">
@@ -80,12 +77,9 @@ watchDebounced(
               :class="{ 'border-red-500': serverError }"
               v-model="formData.password"
             />
-            <ErrorList
-              v-if="realtimeErrors?.password.length"
-              :errors="realtimeErrors.password"
-            />
+            <ErrorList :errors="realtimeErrors?.password" />
           </div>
-          <ErrorList v-if="serverError" :errors="serverError" />
+          <ErrorList :errors="serverError" />
           <Button type="submit" class="w-full">Login</Button>
         </form>
         <div class="mt-4 text-center text-sm">

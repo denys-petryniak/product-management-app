@@ -8,6 +8,21 @@ export const useProjectsStore = defineStore('projects-store', () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const loadProjects = useMemoize(async (key: string) => await projectsQuery)
 
+  const validateCache = () => {
+    if (projects.value?.length) {
+      // "stale-while-revalidate" approach
+      projectsQuery.then(({ data }) => {
+        if (JSON.stringify(data) === JSON.stringify(projects.value)) {
+          console.log('Cached and fresh data')
+          return
+        } else {
+          console.log('Something has changed')
+          loadProjects.delete('projects')
+        }
+      })
+    }
+  }
+
   const getProjects = async () => {
     const { data, error, status } = await loadProjects('projects')
 
@@ -16,6 +31,8 @@ export const useProjectsStore = defineStore('projects-store', () => {
     }
 
     projects.value = data
+
+    validateCache()
   }
 
   return {

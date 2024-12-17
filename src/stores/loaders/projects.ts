@@ -3,24 +3,26 @@ import { useMemoize } from '@vueuse/core'
 import type { Projects } from '@/utils/supabaseQueries'
 
 export const useProjectsStore = defineStore('projects-store', () => {
-  const projects = ref<Projects | null>(null)
+  const projects = ref<Projects>([])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const loadProjects = useMemoize(async (key: string) => await projectsQuery)
 
   const validateCache = () => {
-    if (projects.value?.length) {
-      // "stale-while-revalidate" approach
-      projectsQuery.then(({ data }) => {
-        if (JSON.stringify(data) === JSON.stringify(projects.value)) {
-          console.log('Cached and fresh data')
-          return
-        } else {
-          console.log('Something has changed')
-          loadProjects.delete('projects')
+    if (!projects.value?.length) return
+
+    // "stale-while-revalidate" approach
+    projectsQuery.then(({ data, error }) => {
+      if (JSON.stringify(data) === JSON.stringify(projects.value)) {
+        return
+      } else {
+        loadProjects.delete('projects')
+
+        if (!error && data) {
+          projects.value = data
         }
-      })
-    }
+      }
+    })
   }
 
   const getProjects = async () => {
@@ -30,7 +32,9 @@ export const useProjectsStore = defineStore('projects-store', () => {
       useErrorStore().setError({ error, customCode: status })
     }
 
-    projects.value = data
+    if (data) {
+      projects.value = data
+    }
 
     validateCache()
   }

@@ -67,3 +67,12 @@ export const profileQuery = ({
   return supabase.from('profiles').select().eq(column, value).single()
 }
 export type Profile = QueryData<ReturnType<typeof profileQuery>>
+
+// Fetch profiles grouped by user IDs
+export const groupedProfilesQuery = (userIds: string[]) => {
+  return supabase
+    .from('profiles')
+    .select('username, avatar_url, id, full_name')
+    .in('id', userIds)
+}
+export type Collaborators = QueryData<ReturnType<typeof groupedProfilesQuery>>

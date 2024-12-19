@@ -14,9 +14,14 @@ await getProjects()
 const { getGroupedCollaborators, groupedCollaborators } = useCollaborators()
 
 await getGroupedCollaborators(projects.value)
-console.log(groupedCollaborators.value)
+
+const columnsWithCollaborators = columns(groupedCollaborators)
 </script>
 
 <template>
-  <DataTable v-if="projects?.length" :columns="columns" :data="projects" />
+  <DataTable
+    v-if="projects?.length"
+    :columns="columnsWithCollaborators"
+    :data="projects"
+  />
 </template>

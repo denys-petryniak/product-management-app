@@ -1,8 +1,13 @@
 import { RouterLink } from 'vue-router'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { Projects } from '@/utils/supabaseQueries'
+import type { GroupedCollaborators } from '@/types/GroupedCollaborators'
+import Avatar from '@/components/ui/avatar/Avatar.vue'
+import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 
-export const columns: ColumnDef<Projects[0]>[] = [
+export const columns = (
+  collaborators: Ref<GroupedCollaborators>,
+): ColumnDef<Projects[0]>[] => [
   {
     accessorKey: 'name',
     header: () => h('div', { class: 'text-left' }, 'Name'),
@@ -35,7 +40,11 @@ export const columns: ColumnDef<Projects[0]>[] = [
       return h(
         'div',
         { class: 'text-left font-medium' },
-        JSON.stringify(row.getValue('collaborators')),
+        collaborators.value[row.original.id]?.map(collaborator => {
+          return h(Avatar, () =>
+            h(AvatarImage, { src: collaborator.avatar_url || '' }),
+          )
+        }),
       )
     },
   },

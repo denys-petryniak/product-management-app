@@ -13,7 +13,7 @@ await getProjects()
 
 const { getGroupedCollaborators, groupedCollaborators } = useCollaborators()
 
-await getGroupedCollaborators(projects.value)
+getGroupedCollaborators(projects.value)
 
 const columnsWithCollaborators = columns(groupedCollaborators)
 </script>

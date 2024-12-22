@@ -1,7 +1,6 @@
 import { supabase } from '@/lib/supabaseClient'
 import type { QueryData } from '@supabase/supabase-js'
 
-// Fetch tasks with associated project details
 // FIXME: https://github.com/pnpm/pnpm/issues/6089
 export const tasksWithProjectsQuery = supabase.from('tasks').select(`
   *,
@@ -13,11 +12,9 @@ export const tasksWithProjectsQuery = supabase.from('tasks').select(`
 `)
 export type TaskWithProjects = QueryData<typeof tasksWithProjectsQuery>
 
-// Fetch all projects
 export const projectsQuery = supabase.from('projects').select()
 export type Projects = QueryData<typeof projectsQuery>
 
-// Fetch a single project by slug with associated tasks
 export const projectQuery = (slug: string) => {
   return supabase
     .from('projects')
@@ -37,7 +34,10 @@ export const projectQuery = (slug: string) => {
 }
 export type Project = QueryData<ReturnType<typeof projectQuery>>
 
-// Fetch a single task by ID with associated project details
+export const updateProjectQuery = (project = {}, id: number) => {
+  return supabase.from('projects').update(project).eq('id', id)
+}
+
 export const taskQuery = (id: string) => {
   return supabase
     .from('tasks')
@@ -56,7 +56,6 @@ export const taskQuery = (id: string) => {
 }
 export type Task = QueryData<ReturnType<typeof taskQuery>>
 
-// Fetch a single profile by ID
 export const profileQuery = ({
   column,
   value,
@@ -68,7 +67,6 @@ export const profileQuery = ({
 }
 export type Profile = QueryData<ReturnType<typeof profileQuery>>
 
-// Fetch profiles grouped by user IDs
 export const groupedProfilesQuery = (userIds: string[]) => {
   return supabase
     .from('profiles')

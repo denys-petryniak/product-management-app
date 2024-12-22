@@ -40,7 +40,7 @@ export const columns = (
     cell: ({ row }) => {
       return h(
         'div',
-        { class: 'text-left font-medium' },
+        { class: 'h-20 flex items-center text-left font-medium' },
         collaborators.value[row.original.id]
           ? collaborators.value[row.original.id].map(collaborator => {
               return h(

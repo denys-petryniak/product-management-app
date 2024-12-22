@@ -3,7 +3,7 @@ import { useMemoize } from '@vueuse/core'
 import type { Project, Projects } from '@/utils/supabaseQueries'
 
 export const useProjectsStore = defineStore('projects-store', () => {
-  const projects = ref<Projects>([])
+  const projects = ref<Projects | null>(null)
   const project = ref<Project | null>(null)
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -12,18 +12,32 @@ export const useProjectsStore = defineStore('projects-store', () => {
     async (slug: string) => await projectQuery(slug),
   )
 
-  const validateCache = () => {
-    if (!projects.value?.length) return
+  interface ValidateCacheParams {
+    ref: typeof projects | typeof project
+    query: typeof projectsQuery | typeof projectQuery
+    key: string
+    loaderFn: typeof loadProjects | typeof loadProject
+  }
+
+  const validateCache = ({
+    ref,
+    query,
+    key,
+    loaderFn,
+  }: ValidateCacheParams) => {
+    if (!ref.value) return
+
+    const resolvedQuery = typeof query === 'function' ? query(key) : query
 
     // "stale-while-revalidate" approach
-    projectsQuery.then(({ data, error }) => {
-      if (JSON.stringify(data) === JSON.stringify(projects.value)) {
+    resolvedQuery.then(({ data, error }) => {
+      if (JSON.stringify(data) === JSON.stringify(ref.value)) {
         return
       } else {
-        loadProjects.delete('projects')
+        loaderFn.delete(key)
 
         if (!error && data) {
-          projects.value = data
+          ref.value = data
         }
       }
     })
@@ -40,7 +54,12 @@ export const useProjectsStore = defineStore('projects-store', () => {
       projects.value = data
     }
 
-    validateCache()
+    validateCache({
+      ref: projects,
+      query: projectsQuery,
+      key: 'projects',
+      loaderFn: loadProjects,
+    })
   }
 
   const getProject = async (slug: string) => {
@@ -53,6 +72,13 @@ export const useProjectsStore = defineStore('projects-store', () => {
     if (data) {
       project.value = data
     }
+
+    validateCache({
+      ref: project,
+      query: projectQuery,
+      key: slug,
+      loaderFn: loadProject,
+    })
   }
 
   return {

@@ -31,7 +31,10 @@ export const columns = (
       return h(
         'div',
         { class: 'text-left font-medium' },
-        h(AppInPlaceEditStatus, { modelValue: row.original.status }),
+        h(AppInPlaceEditStatus, {
+          readonly: true,
+          modelValue: row.original.status,
+        }),
       )
     },
   },

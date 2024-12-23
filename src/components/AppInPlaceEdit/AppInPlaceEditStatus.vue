@@ -1,9 +1,17 @@
 <script setup lang="ts">
 const status = defineModel<'in-progress' | 'completed'>()
 
+interface Props {
+  readonly?: boolean
+}
+
+const { readonly = false } = defineProps<Props>()
+
 const emit = defineEmits(['commit'])
 
 const toggleStatus = () => {
+  if (readonly) return
+
   status.value = status.value === 'in-progress' ? 'completed' : 'in-progress'
 
   emit('commit')
@@ -11,7 +19,10 @@ const toggleStatus = () => {
 </script>
 
 <template>
-  <div class="cursor-pointer text-2xl" @click="toggleStatus">
+  <div
+    :class="['cursor-pointer', 'text-2xl', { 'pointer-events-none': readonly }]"
+    @click="toggleStatus"
+  >
     <Transition mode="out-in">
       <iconify-icon
         v-if="status === 'completed'"

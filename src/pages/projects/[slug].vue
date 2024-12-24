@@ -14,6 +14,12 @@ watch(
 )
 
 await getProject(slug)
+
+const { getProfilesByIds } = useCollaborators()
+
+const collaborators = project.value?.collaborators
+  ? await getProfilesByIds(project.value?.collaborators)
+  : []
 </script>
 
 <template>
@@ -48,15 +54,21 @@ await getProject(slug)
         <div class="flex">
           <Avatar
             class="-mr-4 border border-primary transition-transform hover:scale-110"
-            v-for="colaborator in project.collaborators"
-            :key="colaborator"
+            v-for="colaborator in collaborators"
+            :key="colaborator.id"
           >
             <RouterLink
               class="flex h-full w-full items-center justify-center"
-              to=""
+              :to="{
+                name: '/users/[username]',
+                params: { username: colaborator.username },
+              }"
             >
-              <AvatarImage src="" alt="" />
-              <AvatarFallback> </AvatarFallback>
+              <AvatarImage
+                :src="colaborator.avatar_url || ''"
+                :alt="colaborator.username"
+              />
+              <AvatarFallback></AvatarFallback>
             </RouterLink>
           </Avatar>
         </div>
@@ -80,9 +92,21 @@ await getProject(slug)
           </TableHeader>
           <TableBody>
             <TableRow v-for="task in project.tasks" :key="task.id">
-              <TableCell> Lorem ipsum dolor sit amet. </TableCell>
-              <TableCell> In progress </TableCell>
-              <TableCell> 22/08/2024 </TableCell>
+              <TableCell class="p-0">
+                <RouterLink
+                  :to="{
+                    name: '/tasks/[id]',
+                    params: { id: task.id },
+                  }"
+                  class="block p-4 text-left hover:bg-muted"
+                >
+                  {{ task.name }}
+                </RouterLink>
+              </TableCell>
+              <TableCell>
+                <AppInPlaceEditStatus readonly :modelValue="task.status" />
+              </TableCell>
+              <TableCell>{{ task.due_date }}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

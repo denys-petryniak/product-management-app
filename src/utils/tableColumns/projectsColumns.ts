@@ -1,11 +1,11 @@
 import { RouterLink } from 'vue-router'
-import type { ColumnDef } from '@tanstack/vue-table'
-import type { Projects } from '@/utils/supabaseQueries'
-import type { GroupedCollaborators } from '@/types/GroupedCollaborators'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AppInPlaceEditStatus from '@/components/AppInPlaceEdit/AppInPlaceEditStatus.vue'
+import type { ColumnDef } from '@tanstack/vue-table'
+import type { Projects } from '@/utils/supabaseQueries'
+import type { GroupedCollaborators } from '@/types/GroupedCollaborators'
 
 export const columns = (
   collaborators: Ref<GroupedCollaborators>,

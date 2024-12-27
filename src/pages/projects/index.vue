@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useCollaborators } from '@/composables/collaborators'
 import { columns } from '@/utils/tableColumns/projectsColumns'
 
 usePageStore().pageData.title = 'Projects'

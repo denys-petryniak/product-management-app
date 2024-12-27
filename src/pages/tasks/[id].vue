@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { taskQuery } from '@/utils/supabaseQueries'
-import type { Task } from '@/utils/supabaseQueries'
+const { id } = useRoute('/tasks/[id]').params
 
-const route = useRoute('/tasks/[id]')
-const task = ref<Task | null>(null)
+const tasksLoader = useTasksStore()
+
+const { task } = storeToRefs(tasksLoader)
+const { getTask, updateTask } = tasksLoader
 
 watch(
   () => task.value?.name,
@@ -12,29 +13,30 @@ watch(
   },
 )
 
-const getTask = async () => {
-  const { data, error, status } = await taskQuery(route.params.id)
+await getTask(id)
 
-  if (error) {
-    useErrorStore().setError({ error, customCode: status })
-  }
+const { getProfilesByIds } = useCollaborators()
 
-  task.value = data
-}
-
-await getTask()
+const collaborators = task.value?.collaborators
+  ? await getProfilesByIds(task.value?.collaborators)
+  : []
 </script>
 
 <template>
   <Table v-if="task">
     <TableRow>
       <TableHead>Name</TableHead>
-      <TableCell>{{ task.name }}</TableCell>
+      <TableCell>
+        <AppInPlaceEditText v-model="task.name" @commit="updateTask" />
+      </TableCell>
     </TableRow>
     <TableRow>
       <TableHead>Description</TableHead>
       <TableCell>
-        {{ task.description }}
+        <AppInPlaceEditTextarea
+          v-model="task.description"
+          @commit="updateTask"
+        />
       </TableCell>
     </TableRow>
     <TableRow>
@@ -47,7 +49,9 @@ await getTask()
     </TableRow>
     <TableRow>
       <TableHead>Status</TableHead>
-      <TableCell>{{ task.status }}</TableCell>
+      <TableCell>
+        <AppInPlaceEditStatus v-model="task.status" @commit="updateTask" />
+      </TableCell>
     </TableRow>
     <TableRow>
       <TableHead>Collaborators</TableHead>
@@ -55,15 +59,21 @@ await getTask()
         <div class="flex">
           <Avatar
             class="-mr-4 border border-primary transition-transform hover:scale-110"
-            v-for="collaborator in task.collaborators"
-            :key="collaborator"
+            v-for="collaborator in collaborators"
+            :key="collaborator.id"
           >
             <RouterLink
               class="flex h-full w-full items-center justify-center"
-              to=""
+              :to="{
+                name: '/users/[username]',
+                params: { username: collaborator.username },
+              }"
             >
-              <AvatarImage src="" alt="" />
-              <AvatarFallback> </AvatarFallback>
+              <AvatarImage
+                :src="collaborator.avatar_url || ''"
+                :alt="collaborator.username"
+              />
+              <AvatarFallback></AvatarFallback>
             </RouterLink>
           </Avatar>
         </div>
@@ -97,3 +107,15 @@ await getTask()
     </TableRow>
   </Table>
 </template>
+
+<style>
+th {
+  @apply w-[100px];
+}
+h2 {
+  @apply mb-4 w-fit text-lg font-semibold;
+}
+.table-container {
+  @apply h-80 overflow-hidden overflow-y-auto rounded-md bg-slate-900;
+}
+</style>

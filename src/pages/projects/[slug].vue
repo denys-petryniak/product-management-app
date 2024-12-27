@@ -54,19 +54,19 @@ const collaborators = project.value?.collaborators
         <div class="flex">
           <Avatar
             class="-mr-4 border border-primary transition-transform hover:scale-110"
-            v-for="colaborator in collaborators"
-            :key="colaborator.id"
+            v-for="collaborator in collaborators"
+            :key="collaborator.id"
           >
             <RouterLink
               class="flex h-full w-full items-center justify-center"
               :to="{
                 name: '/users/[username]',
-                params: { username: colaborator.username },
+                params: { username: collaborator.username },
               }"
             >
               <AvatarImage
-                :src="colaborator.avatar_url || ''"
-                :alt="colaborator.username"
+                :src="collaborator.avatar_url || ''"
+                :alt="collaborator.username"
               />
               <AvatarFallback></AvatarFallback>
             </RouterLink>

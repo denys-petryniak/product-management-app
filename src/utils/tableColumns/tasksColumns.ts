@@ -1,8 +1,15 @@
 import { RouterLink } from 'vue-router'
+import Avatar from '@/components/ui/avatar/Avatar.vue'
+import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
+import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
+import AppInPlaceEditStatus from '@/components/AppInPlaceEdit/AppInPlaceEditStatus.vue'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { TaskWithProjects } from '@/utils/supabaseQueries'
+import type { GroupedCollaborators } from '@/types/GroupedCollaborators'
 
-export const columns: ColumnDef<TaskWithProjects[0]>[] = [
+export const columns = (
+  collaborators: Ref<GroupedCollaborators>,
+): ColumnDef<TaskWithProjects[0]>[] => [
   {
     accessorKey: 'name',
     header: () => h('div', { class: 'text-left' }, 'Name'),
@@ -24,7 +31,10 @@ export const columns: ColumnDef<TaskWithProjects[0]>[] = [
       return h(
         'div',
         { class: 'text-left font-medium' },
-        row.getValue('status'),
+        h(AppInPlaceEditStatus, {
+          readonly: true,
+          modelValue: row.original.status,
+        }),
       )
     },
   },
@@ -62,7 +72,26 @@ export const columns: ColumnDef<TaskWithProjects[0]>[] = [
       return h(
         'div',
         { class: 'text-left font-medium' },
-        JSON.stringify(row.getValue('collaborators')),
+        collaborators.value[row.original.id]
+          ? collaborators.value[row.original.id].map(collaborator => {
+              return h(
+                RouterLink,
+                { to: `/users/${collaborator.username}` },
+                () => {
+                  return h(
+                    Avatar,
+                    { class: 'hover:scale-110 transition-transform' },
+                    () =>
+                      h(AvatarImage, { src: collaborator.avatar_url || '' }),
+                  )
+                },
+              )
+            })
+          : row.original.collaborators.map(() => {
+              return h(Avatar, { class: 'animate-pulse' }, () =>
+                h(AvatarFallback),
+              )
+            }),
       )
     },
   },

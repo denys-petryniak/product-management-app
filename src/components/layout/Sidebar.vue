@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { profile } = storeToRefs(useAuthStore())
+
 const links = [
   {
     title: 'Dashboard',
@@ -17,22 +19,17 @@ const links = [
   },
 ]
 
-const accountLinks = [
+const accountLinks = computed(() => [
   {
     title: 'Profile',
-    to: '/profile',
+    to: `/users/${profile.value?.username}`,
     icon: 'lucide:user',
-  },
-  {
-    title: 'Settings',
-    to: '/settings',
-    icon: 'lucide:settings',
   },
   {
     title: 'Sign Out',
     icon: 'lucide:log-out',
   },
-]
+])
 
 const router = useRouter()
 

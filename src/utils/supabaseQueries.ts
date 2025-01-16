@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabaseClient'
 import type { QueryData } from '@supabase/supabase-js'
+import type { TaskFormData } from '@/types/TaskFormData'
 
 // FIXME: https://github.com/pnpm/pnpm/issues/6089
 export const tasksWithProjectsQuery = supabase.from('tasks').select(`
@@ -58,6 +59,10 @@ export type Task = QueryData<ReturnType<typeof taskQuery>>
 
 export const updateTaskQuery = (task = {}, id: number) => {
   return supabase.from('tasks').update(task).eq('id', id)
+}
+
+export const createTaskQuery = (task: TaskFormData) => {
+  return supabase.from('tasks').insert(task)
 }
 
 export const profileQuery = ({

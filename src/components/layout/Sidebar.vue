@@ -65,10 +65,13 @@ defineEmits(['taskSelected'])
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem @click="$emit('taskSelected')"
-            >Task</DropdownMenuItem
+          <DropdownMenuItem
+            @click="$emit('taskSelected')"
+            class="cursor-pointer"
           >
-          <DropdownMenuItem>Project</DropdownMenuItem>
+            Task
+          </DropdownMenuItem>
+          <DropdownMenuItem class="cursor-pointer">Project</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

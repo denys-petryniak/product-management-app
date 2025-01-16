@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { FormKit } from '@formkit/vue'
+
 const isSheetOpen = defineModel<boolean>()
 </script>
 
@@ -8,7 +10,7 @@ const isSheetOpen = defineModel<boolean>()
       <SheetHeader>
         <SheetTitle>Create new Task</SheetTitle>
       </SheetHeader>
-      <p>Content</p>
+      <FormKit type="text" />
     </SheetContent>
   </Sheet>
 </template>

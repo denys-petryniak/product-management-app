@@ -22,6 +22,8 @@
     "commitlint": "commitlint --edit"
   },
   "dependencies": {
+    "@formkit/core": "^1.6.9",
+    "@formkit/vue": "^1.6.9",
     "@supabase/supabase-js": "2.47.9",
     "@tanstack/vue-table": "^8.20.5",
     "@vueuse/core": "^12.0.0",

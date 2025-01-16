@@ -1,8 +1,56 @@
 <script setup lang="ts">
 import { FormKit } from '@formkit/vue'
+import { profilesQuery, projectsQuery } from '@/utils/supabaseQueries'
 import type { FormData } from '@/types/TaskFormData'
 
 const isSheetOpen = defineModel<boolean>()
+
+type SelectOption = {
+  label: string
+  value: number | string
+}
+
+type SelectOptions = {
+  projects: SelectOption[]
+  profiles: SelectOption[]
+}
+
+const selectOptions = ref(<SelectOptions>{
+  projects: [],
+  profiles: [],
+})
+
+const getProjectsOptions = async () => {
+  const { data: projects, error } = await projectsQuery
+
+  if (error || !projects) return
+
+  projects.forEach(project => {
+    selectOptions.value.projects.push({
+      label: project.name,
+      value: project.id,
+    })
+  })
+}
+
+const getProfilesOptions = async () => {
+  const { data: profiles, error } = await profilesQuery
+
+  if (error || !profiles) return
+
+  profiles.forEach(profile => {
+    selectOptions.value.profiles.push({
+      label: profile.full_name,
+      value: profile.id,
+    })
+  })
+}
+
+const getOptions = async () => {
+  await Promise.all([getProjectsOptions(), getProfilesOptions()])
+}
+
+getOptions()
 
 const createTask = async (formData: FormData) => {
   await new Promise(resolve => {
@@ -33,17 +81,7 @@ const createTask = async (formData: FormData) => {
           id="for"
           label="For"
           placeholder="Select a user"
-          :options="[
-            { label: 'User 1', value: 1 },
-            { label: 'User 2', value: 2 },
-          ]"
-        />
-        <FormKit
-          type="textarea"
-          name="description"
-          id="description"
-          label="Description"
-          placeholder="Task description"
+          :options="selectOptions.profiles"
         />
         <FormKit
           type="select"
@@ -51,10 +89,14 @@ const createTask = async (formData: FormData) => {
           id="project"
           label="Project"
           placeholder="Select a project"
-          :options="[
-            { label: 'Project 1', value: 1 },
-            { label: 'Project 2', value: 2 },
-          ]"
+          :options="selectOptions.projects"
+        />
+        <FormKit
+          type="textarea"
+          name="description"
+          id="description"
+          label="Description"
+          placeholder="Task description"
         />
       </FormKit>
     </SheetContent>

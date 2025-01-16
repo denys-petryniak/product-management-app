@@ -71,6 +71,9 @@ export const profileQuery = ({
 }
 export type Profile = QueryData<ReturnType<typeof profileQuery>>
 
+export const profilesQuery = supabase.from('profiles').select(`id, full_name`)
+export type Profiles = QueryData<typeof profilesQuery>
+
 export const groupedProfilesQuery = (userIds: string[]) => {
   return supabase
     .from('profiles')

@@ -23,7 +23,7 @@ const toggleStatus = () => {
     :class="['cursor-pointer', 'text-2xl', { 'pointer-events-none': readonly }]"
     @click="toggleStatus"
   >
-    <Transition mode="out-in">
+    <Transition name="scale" mode="out-in">
       <iconify-icon
         v-if="status === 'completed'"
         icon="lucide:circle-check"
@@ -33,15 +33,3 @@ const toggleStatus = () => {
     </Transition>
   </div>
 </template>
-
-<style scoped>
-.v-enter-active,
-.v-leave-active {
-  transition: transform 0.1s;
-}
-
-.v-enter-from,
-.v-leave-to {
-  transform: scale(0.3);
-}
-</style>

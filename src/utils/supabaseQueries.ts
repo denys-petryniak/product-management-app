@@ -57,12 +57,16 @@ export const taskQuery = (id: string) => {
 }
 export type Task = QueryData<ReturnType<typeof taskQuery>>
 
+export const createTaskQuery = (task: TaskFormData) => {
+  return supabase.from('tasks').insert(task)
+}
+
 export const updateTaskQuery = (task = {}, id: number) => {
   return supabase.from('tasks').update(task).eq('id', id)
 }
 
-export const createTaskQuery = (task: TaskFormData) => {
-  return supabase.from('tasks').insert(task)
+export const deleteTaskQuery = (id: number) => {
+  return supabase.from('tasks').delete().eq('id', id)
 }
 
 export const profileQuery = ({

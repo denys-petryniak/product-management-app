@@ -3,6 +3,7 @@ import {
   taskQuery,
   tasksWithProjectsQuery,
   updateTaskQuery,
+  deleteTaskQuery,
 } from '@/utils/supabaseQueries'
 import type { Task, TaskWithProjects } from '@/utils/supabaseQueries'
 
@@ -103,12 +104,23 @@ export const useTasksStore = defineStore('tasks-store', () => {
     }
   }
 
+  const deleteTask = async () => {
+    if (!task.value) return
+
+    const { error, status } = await deleteTaskQuery(task.value.id)
+
+    if (error) {
+      useErrorStore().setError({ error, customCode: status })
+    }
+  }
+
   return {
     tasks,
     task,
     getTasks,
     getTask,
     updateTask,
+    deleteTask,
   }
 })
 

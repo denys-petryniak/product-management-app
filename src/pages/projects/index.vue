@@ -15,6 +15,14 @@ const { getGroupedCollaborators, groupedCollaborators } = useCollaborators()
 getGroupedCollaborators(projects.value ?? [])
 
 const columnsWithCollaborators = columns(groupedCollaborators)
+
+useMeta({
+  title: 'Projects | Pulse',
+  description: {
+    name: 'description',
+    content: 'See all projects in Pulse.',
+  },
+})
 </script>
 
 <template>

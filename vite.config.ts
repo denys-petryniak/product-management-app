@@ -36,6 +36,9 @@ export default defineConfig({
         'vue',
         // https://uvr.esm.is/introduction#auto-imports
         VueRouterAutoImports,
+        {
+          'vue-meta': ['useMeta'],
+        },
         // custom
         {
           pinia: ['defineStore', 'storeToRefs', 'acceptHMRUpdate'],

@@ -15,6 +15,10 @@ const { getGroupedCollaborators, groupedCollaborators } = useCollaborators()
 getGroupedCollaborators(tasks.value ?? [])
 
 const columnsWithCollaborators = columns(groupedCollaborators)
+
+useMeta({
+  title: 'Tasks | Pulse',
+})
 </script>
 
 <template>

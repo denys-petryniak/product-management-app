@@ -10,10 +10,19 @@ const errorStore = useErrorStore()
 onErrorCaptured(error => {
   errorStore.setError({ error })
 })
+
+const { user } = storeToRefs(useAuthStore())
+
+const AuthLayout = defineAsyncComponent(
+  () => import('./components/Layout/main/AuthLayout.vue'),
+)
+const GuestLayout = defineAsyncComponent(
+  () => import('./components/Layout/main/GuestLayout.vue'),
+)
 </script>
 
 <template>
-  <AuthLayout>
+  <Component :is="user ? AuthLayout : GuestLayout">
     <AppErrorPage v-if="errorStore.activeError" />
     <RouterView v-else v-slot="{ Component, route }">
       <template v-if="Component">
@@ -25,5 +34,5 @@ onErrorCaptured(error => {
         </Suspense>
       </template>
     </RouterView>
-  </AuthLayout>
+  </Component>
 </template>

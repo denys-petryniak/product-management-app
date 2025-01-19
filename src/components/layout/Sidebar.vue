@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
+import { menuKey } from '@/utils/injectionKeys'
+import type { MenuInjectionOptions } from '@/utils/injectionKeys'
 
 const { profile } = storeToRefs(useAuthStore())
 
@@ -49,9 +51,9 @@ const executeAction = async (linkTitle: string) => {
 
 defineEmits(['taskSelected'])
 
-const { isMenuOpen, toggleMenu } = useMenu()
+const { isMenuOpen, toggleMenu } = inject(menuKey) as MenuInjectionOptions
 
-const windowWidth = useWindowSize().width
+const { width: windowWidth } = useWindowSize()
 
 watchEffect(() => {
   const tabletBreakpoint = 1024

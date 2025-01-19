@@ -1,4 +1,4 @@
-// Global state to track the menu's open/closed status
+// Global state to track the menu's open/closed status, created in module scope
 const isMenuOpen = ref(false)
 
 export const useMenu = () => {

@@ -1,5 +1,10 @@
 <script setup lang="ts">
+import { useDark, useToggle } from '@vueuse/core'
+
 const { profile } = storeToRefs(useAuthStore())
+
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 </script>
 
 <template>
@@ -17,31 +22,41 @@ const { profile } = storeToRefs(useAuthStore())
         placeholder="Search ..."
       />
     </form>
-    <DropdownMenu v-if="profile">
-      <DropdownMenuTrigger>
-        <Avatar>
-          <AvatarImage
-            :src="profile.avatar_url ?? ''"
-            :alt="`${profile.full_name} profile picture`"
-          />
-          <AvatarFallback></AvatarFallback>
-        </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <RouterLink
-            :to="{
-              name: '/users/[username]',
-              params: { username: profile.username },
-            }"
-            class="h-full w-full"
-          >
-            <span>Profile</span>
-          </RouterLink>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div class="flex items-center justify-center gap-4">
+      <Button class="h-8 w-8" @click="toggleDark()">
+        <Transition name="scale" mode="out-in">
+          <iconify-icon v-if="isDark" icon="lucide:sun" />
+          <iconify-icon v-else icon="lucide:moon" />
+        </Transition>
+      </Button>
+      <div class="h-10 w-10">
+        <DropdownMenu v-if="profile">
+          <DropdownMenuTrigger>
+            <Avatar>
+              <AvatarImage
+                :src="profile.avatar_url ?? ''"
+                :alt="`${profile.full_name} profile picture`"
+              />
+              <AvatarFallback></AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <RouterLink
+                :to="{
+                  name: '/users/[username]',
+                  params: { username: profile.username },
+                }"
+                class="h-full w-full"
+              >
+                <span>Profile</span>
+              </RouterLink>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </div>
   </nav>
 </template>

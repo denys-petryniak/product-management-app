@@ -2,12 +2,17 @@
 const { pageData } = storeToRefs(usePageStore())
 
 const isTaskSheetOpen = ref(false)
+
+const { isMenuOpen } = useMenu()
 </script>
 
 <template>
   <Sidebar @task-selected="isTaskSheetOpen = true" />
   <AppNewTask v-model="isTaskSheetOpen" />
-  <div class="ml-16 flex flex-col transition-[margin] lg:ml-52">
+  <div
+    class="flex flex-col transition-[margin]"
+    :class="{ 'ml-52': isMenuOpen, 'ml-24': !isMenuOpen }"
+  >
     <TopNavbar />
     <main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div class="flex items-center">

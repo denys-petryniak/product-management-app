@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useWindowSize } from '@vueuse/core'
+
 const { profile } = storeToRefs(useAuthStore())
 
 const links = [
@@ -46,16 +48,27 @@ const executeAction = async (linkTitle: string) => {
 }
 
 defineEmits(['taskSelected'])
+
+const { isMenuOpen, toggleMenu } = useMenu()
+
+const windowWidth = useWindowSize().width
+
+watchEffect(() => {
+  const tabletBreakpoint = 1024
+
+  isMenuOpen.value = windowWidth.value > tabletBreakpoint
+})
 </script>
 
 <template>
   <aside
-    class="fixed flex h-screen w-16 flex-col gap-2 border-r bg-muted/40 transition-[width] lg:w-52"
+    class="fixed flex h-screen flex-col gap-2 border-r bg-muted/40 transition-[width]"
+    :class="{ 'w-52': isMenuOpen, 'w-24': !isMenuOpen }"
   >
     <div
       class="flex h-16 shrink-0 items-center justify-between gap-1 border-b px-2 lg:px-4"
     >
-      <Button variant="outline" size="icon" class="h-8 w-8">
+      <Button variant="outline" size="icon" class="h-8 w-8" @click="toggleMenu">
         <iconify-icon icon="lucide:menu"></iconify-icon>
       </Button>
       <DropdownMenu>

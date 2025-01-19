@@ -120,25 +120,25 @@ const handleDeleteTask = async () => {
         </TableCell>
       </TableRow>
     </Table>
+    <Button
+      variant="destructive"
+      class="mt-3 w-full max-w-40 self-end"
+      @click="handleDeleteTask"
+    >
+      <Transition name="scale" mode="out-in">
+        <iconify-icon
+          v-if="deleteTaskLoading"
+          icon="lucide:loader-circle"
+          class="mr-1 animate-spin"
+        ></iconify-icon>
+        <iconify-icon v-else icon="lucide:trash-2" class="mr-1"></iconify-icon>
+      </Transition>
+      Delete Task
+    </Button>
   </div>
-  <Button
-    variant="destructive"
-    class="mt-3 w-full max-w-40 self-end"
-    @click="handleDeleteTask"
-  >
-    <Transition name="scale" mode="out-in">
-      <iconify-icon
-        v-if="deleteTaskLoading"
-        icon="lucide:loader-circle"
-        class="mr-1 animate-spin"
-      ></iconify-icon>
-      <iconify-icon v-else icon="lucide:trash-2" class="mr-1"></iconify-icon>
-    </Transition>
-    Delete Task
-  </Button>
 </template>
 
-<style>
+<style scoped>
 th {
   @apply w-[100px];
 }
